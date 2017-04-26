@@ -15,16 +15,19 @@ public class Account
     @Id
     private long account_id;
 
-    @NotNull
+
     private String account_name;
 
-    @NotNull
+
     private String account_desc;
 
-    @NotNull
+
     private boolean account_is_ative;
 
     public Account() {
+    }
+
+    public Account(long account_id, String account_name, String account_desc, boolean account_is_ative) {
     }
 
     public Account(long value)
@@ -69,4 +72,6 @@ public class Account
     public void setAccount_is_ative(boolean account_is_ative) {
         this.account_is_ative = account_is_ative;
     }
+
+
 }
