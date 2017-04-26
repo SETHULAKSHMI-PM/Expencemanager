@@ -13,7 +13,7 @@ import razorthink.models.Account;
 
 @Controller
 @RequestMapping("/account")
-public class AccountControl
+public class AccountController
 {
     @Autowired
     private AccountDao accountDao;
@@ -50,7 +50,7 @@ public class AccountControl
         return "Deleted successfully";
     }
 
-    @RequestMapping("/update")
+    /*@RequestMapping("/update")
     @ResponseBody
     public String update(long account_id, String account_name, String account_desc, boolean account_is_ative)
     {
@@ -64,7 +64,7 @@ public class AccountControl
             e.printStackTrace();
         }
         return "Updated successfully";
-    }
+    }*/
 
    /* @RequestMapping("/view")
     @ResponseBody

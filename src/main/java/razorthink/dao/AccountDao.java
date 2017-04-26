@@ -37,18 +37,14 @@ public class AccountDao
         return;
     }
 
-
     public Account getById(long account_id)
     {
         return (Account) getSession().createQuery("from Account where account_id = :account_id").setParameter("account_id", account_id).uniqueResult();
     }
 
-    public void update(Account account)
+   /* public void update(Account account)
     {
         getSession().update(account);
         return;
-    }
-
-
-
+    }*/
 }

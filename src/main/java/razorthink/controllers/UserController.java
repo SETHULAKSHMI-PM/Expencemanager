@@ -13,7 +13,7 @@ import razorthink.models.User;
 
 @Controller
 @RequestMapping(value = "/user")
-public class UserControl
+public class UserController
 {
     @Autowired
     private UserDao userDao;

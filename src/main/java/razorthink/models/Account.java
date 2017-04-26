@@ -11,17 +11,16 @@ import javax.validation.constraints.NotNull;
 @Table(name = "account")
 public class Account
 {
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long account_id;
 
-
+    @NotNull
     private String account_name;
-
 
     private String account_desc;
 
-
+    @NotNull
     private boolean account_is_ative;
 
     public Account() {
