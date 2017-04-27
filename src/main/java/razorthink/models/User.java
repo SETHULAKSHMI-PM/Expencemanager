@@ -2,6 +2,8 @@ package razorthink.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by sethulakshmi on 24/4/17.
@@ -25,12 +27,25 @@ public class User
     @NotNull
     private String user_password;
 
-    @NotNull
+   /* @NotNull
     private boolean user_is_ative;
 
     @NotNull
     private double user_total_balance;
+*/
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Collection<Account> account = new ArrayList<Account>();
 
+    public Collection<Account> getAccount()
+    {
+        return account;
+    }
+    public void setAccount(Collection<Account> account)
+    {
+        this.account = account;
+    }
+
+    //constructors
     public User()
     {
     }
@@ -39,15 +54,16 @@ public class User
         this.user_id = value;
     }
 
-    public User(String user_name, String user_email, String user_password, boolean user_is_ative, double user_total_balance)
+    public User(String user_name, String user_email, String user_password)
     {
         this.user_name = user_name;
         this.user_email = user_email;
         this.user_password = user_password;
-        this.user_is_ative = user_is_ative;
-        this.user_total_balance = user_total_balance;
+        /*this.user_is_ative = user_is_ative;
+        this.user_total_balance = user_total_balance;*/
     }
 
+    //Getters and setters
     public long getUser_id() {
         return user_id;
     }
@@ -80,7 +96,7 @@ public class User
         this.user_password = user_password;
     }
 
-    public boolean isUser_is_ative() {
+   /* public boolean isUser_is_ative() {
         return user_is_ative;
     }
 
@@ -94,5 +110,5 @@ public class User
 
     public void setUser_total_balance(double user_total_balance) {
         this.user_total_balance = user_total_balance;
-    }
+    }*/
 }

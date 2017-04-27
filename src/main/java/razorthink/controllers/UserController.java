@@ -21,11 +21,11 @@ public class UserController
     //Save user details
     @RequestMapping("/save")
     @ResponseBody
-    public String save(String user_name, String user_email, String user_password, boolean user_is_ative, double user_total_balance)
+    public String save(String user_name, String user_email, String user_password)
     {
         try
         {
-            User user = new User(user_name, user_email, user_password, user_is_ative, user_total_balance);
+            User user = new User(user_name, user_email, user_password);
             userDao.save(user);
         }
         catch (Exception e)

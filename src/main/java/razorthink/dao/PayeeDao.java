@@ -4,17 +4,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import razorthink.models.Account;
+import razorthink.models.Payee;
 
 import javax.transaction.Transactional;
 
 /**
- * Created by sethulakshmi on 25/4/17.
+ * Created by sethulakshmi on 27/4/17.
  */
 
 @Repository
 @Transactional
-public class AccountDao
+public class PayeeDao
 {
     @Autowired
     private SessionFactory sessionFactory;
@@ -25,21 +25,15 @@ public class AccountDao
     }
 
 
-    public void save(Account account)
+    public void save(Payee payee)
     {
-        getSession().save(account);
+        getSession().save(payee);
         return;
     }
 
-    public void delete(Account account)
+    public void delete(Payee payee)
     {
-        getSession().delete(account);
+        getSession().delete(payee);
         return;
     }
-
-   /* public void update(Account account)
-    {
-        getSession().update(account);
-        return;
-    }*/
 }

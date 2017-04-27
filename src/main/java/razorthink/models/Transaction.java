@@ -26,7 +26,7 @@ public class Transaction
     @NotNull
     private Date transaction_date;
 
-    private Text transaction_desc;
+    private String transaction_desc;
 
     @NotNull
     private boolean transaction_is_active;
@@ -38,7 +38,7 @@ public class Transaction
         this.transactionId = value;
     }
 
-    public Transaction(String transaction_type, double transaction_amount, Date transaction_date, Text transaction_desc, boolean transaction_is_active) {
+    public Transaction(String transaction_type, double transaction_amount, Date transaction_date, String transaction_desc, boolean transaction_is_active) {
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
         this.transaction_date = transaction_date;
@@ -78,11 +78,11 @@ public class Transaction
         this.transaction_date = transaction_date;
     }
 
-    public Text getTransaction_desc() {
+    public String getTransaction_desc() {
         return transaction_desc;
     }
 
-    public void setTransaction_desc(Text transaction_desc) {
+    public void setTransaction_desc(String transaction_desc) {
         this.transaction_desc = transaction_desc;
     }
 

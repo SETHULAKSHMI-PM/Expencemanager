@@ -3,6 +3,8 @@ package razorthink.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.soap.Text;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by sethulakshmi on 26/4/17.
@@ -19,10 +21,21 @@ public class Category
     @NotNull
     private String category_name;
 
-    private Text category_desc;
+    private String category_desc;
 
     @NotNull
     private  boolean category_is_active;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Collection<Payee> payees = new ArrayList<Payee>();
+
+    public Collection<Payee> getPayees() {
+        return payees;
+    }
+
+    public void setPayees(Collection<Payee> payees) {
+        this.payees = payees;
+    }
 
     public Category() {
     }
@@ -31,10 +44,9 @@ public class Category
         this.category_id = value;
     }
 
-    public Category(String category_name, Text category_desc, boolean category_is_active) {
+    public Category(String category_name, String category_desc) {
         this.category_name = category_name;
         this.category_desc = category_desc;
-        this.category_is_active = category_is_active;
     }
 
     public long getCategory_id() {
@@ -53,19 +65,19 @@ public class Category
         this.category_name = category_name;
     }
 
-    public Text getCategory_desc() {
+    public String getCategory_desc() {
         return category_desc;
     }
 
-    public void setCategory_desc(Text category_desc) {
+    public void setCategory_desc(String category_desc) {
         this.category_desc = category_desc;
     }
 
-    public boolean isCategory_is_active() {
+  /*  public boolean isCategory_is_active() {
         return category_is_active;
     }
 
     public void setCategory_is_active(boolean category_is_active) {
         this.category_is_active = category_is_active;
-    }
+    }*/
 }

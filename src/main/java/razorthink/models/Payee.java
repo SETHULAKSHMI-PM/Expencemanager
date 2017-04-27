@@ -19,10 +19,22 @@ public class Payee
     @NotNull
     private String payee_name;
 
-    private Text payee_desc;
+    private String payee_desc;
 
-    @NotNull
-    private boolean payee_is_active;
+   /* @NotNull
+    private boolean payee_is_active;*/
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CategoryId")
+    private Category category;
+    public Category getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public Payee() {
     }
@@ -31,10 +43,9 @@ public class Payee
         this.payee_id = value;
     }
 
-    public Payee(String payee_name, Text payee_desc, boolean payee_is_active) {
+    public Payee(String payee_name, String payee_desc) {
         this.payee_name = payee_name;
         this.payee_desc = payee_desc;
-        this.payee_is_active = payee_is_active;
     }
 
     public long getPayee_id() {
@@ -53,19 +64,19 @@ public class Payee
         this.payee_name = payee_name;
     }
 
-    public Text getPayee_desc() {
+    public String getPayee_desc() {
         return payee_desc;
     }
 
-    public void setPayee_desc(Text payee_desc) {
+    public void setPayee_desc(String payee_desc) {
         this.payee_desc = payee_desc;
     }
 
-    public boolean isPayee_is_active() {
+    /*public boolean isPayee_is_active() {
         return payee_is_active;
     }
 
     public void setPayee_is_active(boolean payee_is_active) {
         this.payee_is_active = payee_is_active;
-    }
+    }*/
 }

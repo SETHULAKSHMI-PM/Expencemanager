@@ -2,20 +2,19 @@ package razorthink.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import razorthink.models.User;
+import razorthink.models.Category;
+
 import javax.transaction.Transactional;
 
 /**
- * Created by sethulakshmi on 24/4/17.
+ * Created by sethulakshmi on 27/4/17.
  */
 
 @Repository
 @Transactional
-public class UserDao
+public class CategoryDao
 {
-    @Autowired
     private SessionFactory sessionFactory;
 
     private Session getSession()
@@ -23,25 +22,16 @@ public class UserDao
         return sessionFactory.getCurrentSession();
     }
 
-    //save user
-    public void save(User user)
+
+    public void save(Category category)
     {
-        getSession().save(user);
+        getSession().save(category);
         return;
     }
 
-    //delete user
-    public void delete(User user)
+    public void delete(Category category)
     {
-        getSession().delete(user);
+        getSession().delete(category);
         return;
     }
-
-
-
 }
-
-
-
-
-

@@ -5,7 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import razorthink.dao.AccountDao;
+import razorthink.dao.UserDao;
 import razorthink.models.Account;
+import razorthink.models.User;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by sethulakshmi on 25/4/17.
@@ -17,15 +21,24 @@ public class AccountController
 {
     @Autowired
     private AccountDao accountDao;
+    @Autowired
+    private UserDao userDao;
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(String account_name, String account_desc, boolean account_is_ative)
+    public String save(String account_name, String account_desc)
     {
         try
         {
-            Account account = new Account(account_name, account_desc, account_is_ative);
-            accountDao.save(account);
+            User user = new User("sethu", "Sethu@gmail.com", "12345");
+
+            Collection<Account> accounts = new ArrayList<Account>();
+            Account account = new Account(account_name, account_desc);
+
+            accounts.add(account);
+            user.setAccount(accounts);
+            account.setUser(user);
+            userDao.save(user);
         }
         catch (Exception e)
         {

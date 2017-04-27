@@ -20,9 +20,19 @@ public class Account
 
     private String account_desc;
 
-    @NotNull
-    private boolean account_is_ative;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "UserID")
+    private User user;
+    public User getUser()
+    {
+        return user;
+    }
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
 
+    //construtors
     public Account() {
     }
 
@@ -34,12 +44,12 @@ public class Account
         this.account_id = value;
     }
 
-    public Account(String account_name, String account_desc, boolean account_is_ative) {
+    public Account(String account_name, String account_desc) {
         this.account_name = account_name;
         this.account_desc = account_desc;
-        this.account_is_ative = account_is_ative;
+       /* this.account_is_ative = account_is_ative;*/
     }
-
+    //Getters and setters
     public long getAccount_id() {
         return account_id;
     }
@@ -64,7 +74,7 @@ public class Account
         this.account_desc = account_desc;
     }
 
-    public boolean isAccount_is_ative() {
+   /* public boolean isAccount_is_ative() {
         return account_is_ative;
     }
 
@@ -72,5 +82,5 @@ public class Account
         this.account_is_ative = account_is_ative;
     }
 
-
+*/
 }
