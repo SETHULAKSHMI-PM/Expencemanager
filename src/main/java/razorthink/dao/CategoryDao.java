@@ -2,6 +2,7 @@ package razorthink.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import razorthink.models.Category;
 
@@ -15,6 +16,7 @@ import javax.transaction.Transactional;
 @Transactional
 public class CategoryDao
 {
+    @Autowired
     private SessionFactory sessionFactory;
 
     private Session getSession()
@@ -22,16 +24,13 @@ public class CategoryDao
         return sessionFactory.getCurrentSession();
     }
 
-
     public void save(Category category)
     {
         getSession().save(category);
-        return;
     }
 
     public void delete(Category category)
     {
         getSession().delete(category);
-        return;
     }
 }

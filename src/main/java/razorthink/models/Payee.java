@@ -3,6 +3,8 @@ package razorthink.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.soap.Text;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by sethulakshmi on 26/4/17.
@@ -21,8 +23,19 @@ public class Payee
 
     private String payee_desc;
 
-   /* @NotNull
+    /* @NotNull
     private boolean payee_is_active;*/
+
+    @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
+    private Collection<Transaction> transaction = new ArrayList<Transaction>();
+
+    public Collection<Transaction> getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Collection<Transaction> transaction) {
+        this.transaction = transaction;
+    }
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CategoryId")
@@ -37,6 +50,9 @@ public class Payee
     }
 
     public Payee() {
+    }
+
+    public Payee(String category_name, String category_desc, String payee_name, String payee_desc) {
     }
 
     public Payee(long value){

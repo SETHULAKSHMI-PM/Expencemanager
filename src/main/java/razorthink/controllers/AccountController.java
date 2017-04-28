@@ -26,19 +26,20 @@ public class AccountController
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(String account_name, String account_desc)
+    public String save(long user_id, String account_name, String account_desc)
     {
         try
         {
-            User user = new User("sethu", "Sethu@gmail.com", "12345");
+            User user = accountDao.getByUserId(user_id);
 
             Collection<Account> accounts = new ArrayList<Account>();
             Account account = new Account(account_name, account_desc);
-
             accounts.add(account);
+
             user.setAccount(accounts);
             account.setUser(user);
-            userDao.save(user);
+
+            accountDao.save(account);
         }
         catch (Exception e)
         {
@@ -78,36 +79,4 @@ public class AccountController
         }
         return "Updated successfully";
     }*/
-
-   /* @RequestMapping("/view")
-    @ResponseBody
-    public String view(long account_id)
-    {
-        String active;
-        String desc;
-        String name;
-        try
-        {
-            Account account = accountDao.getById(account_id);
-            active = String.valueOf(account.isAccount_is_ative());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return "User description is : " + active;
-    }*/
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

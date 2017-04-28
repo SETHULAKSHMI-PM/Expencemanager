@@ -24,16 +24,13 @@ public class PayeeDao
         return sessionFactory.getCurrentSession();
     }
 
-
     public void save(Payee payee)
     {
         getSession().save(payee);
-        return;
     }
 
     public void delete(Payee payee)
     {
         getSession().delete(payee);
-        return;
     }
 }

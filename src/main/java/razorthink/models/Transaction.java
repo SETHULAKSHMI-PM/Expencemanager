@@ -23,13 +23,25 @@ public class Transaction
     @NotNull
     private double transaction_amount;
 
-    @NotNull
-    private Date transaction_date;
+    /*@NotNull
+    private Date transaction_date;*/
 
     private String transaction_desc;
 
-    @NotNull
+    /*@NotNull
     private boolean transaction_is_active;
+*/
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PayeeId")
+    private Payee payee;
+
+    public Payee getPayee() {
+        return payee;
+    }
+
+    public void setPayee(Payee payee) {
+        this.payee = payee;
+    }
 
     public Transaction() {
     }
@@ -38,12 +50,12 @@ public class Transaction
         this.transactionId = value;
     }
 
-    public Transaction(String transaction_type, double transaction_amount, Date transaction_date, String transaction_desc, boolean transaction_is_active) {
+    public Transaction(String transaction_type, double transaction_amount, String transaction_desc) {
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
-        this.transaction_date = transaction_date;
+       // this.transaction_date = transaction_date;
         this.transaction_desc = transaction_desc;
-        this.transaction_is_active = transaction_is_active;
+       // this.transaction_is_active = transaction_is_active;
     }
 
     public long getTransactionId() {
@@ -70,13 +82,13 @@ public class Transaction
         this.transaction_amount = transaction_amount;
     }
 
-    public Date getTransaction_date() {
+    /*public Date getTransaction_date() {
         return transaction_date;
     }
 
     public void setTransaction_date(Date transaction_date) {
         this.transaction_date = transaction_date;
-    }
+    }*/
 
     public String getTransaction_desc() {
         return transaction_desc;
@@ -86,11 +98,11 @@ public class Transaction
         this.transaction_desc = transaction_desc;
     }
 
-    public boolean isTransaction_is_active() {
+    /*public boolean isTransaction_is_active() {
         return transaction_is_active;
     }
 
     public void setTransaction_is_active(boolean transaction_is_active) {
         this.transaction_is_active = transaction_is_active;
-    }
+    }*/
 }

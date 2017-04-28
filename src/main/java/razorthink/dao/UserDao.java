@@ -27,18 +27,13 @@ public class UserDao
     public void save(User user)
     {
         getSession().save(user);
-        return;
     }
 
     //delete user
     public void delete(User user)
     {
         getSession().delete(user);
-        return;
     }
-
-
-
 }
 
 

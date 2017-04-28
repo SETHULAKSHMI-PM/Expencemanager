@@ -2,7 +2,6 @@ package razorthink.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,10 +22,7 @@ public class Category
 
     private String category_desc;
 
-    @NotNull
-    private  boolean category_is_active;
-
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private Collection<Payee> payees = new ArrayList<Payee>();
 
     public Collection<Payee> getPayees() {

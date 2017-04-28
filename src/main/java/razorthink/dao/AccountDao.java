@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import razorthink.models.Account;
+import razorthink.models.User;
 
 import javax.transaction.Transactional;
 
@@ -24,17 +25,21 @@ public class AccountDao
         return sessionFactory.getCurrentSession();
     }
 
-
     public void save(Account account)
     {
         getSession().save(account);
-        return;
     }
 
     public void delete(Account account)
     {
         getSession().delete(account);
-        return;
+    }
+
+    public User getByUserId(long user_id)
+    {
+        return (User) getSession().createQuery("from User where user_id = :user_id")
+                .setParameter("user_id", user_id)
+                .uniqueResult();
     }
 
    /* public void update(Account account)
