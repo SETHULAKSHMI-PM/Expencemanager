@@ -33,4 +33,10 @@ public class PayeeDao
     {
         getSession().delete(payee);
     }
+    public Payee getByPayeeName(String payee_name)
+    {
+        return (Payee) getSession().createQuery("from Payee where payee_name = :payee_name")
+                .setParameter("payee_name", payee_name)
+                .uniqueResult();
+    }
 }

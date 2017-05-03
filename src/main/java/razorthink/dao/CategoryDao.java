@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import razorthink.models.Category;
-
 import javax.transaction.Transactional;
 
 /**
@@ -32,5 +31,12 @@ public class CategoryDao
     public void delete(Category category)
     {
         getSession().delete(category);
+    }
+
+    public Category getByCategoryName(String category_name)
+    {
+        return (Category) getSession().createQuery("from Category where category_name = :category_name")
+                .setParameter("category_name", category_name)
+                .uniqueResult();
     }
 }

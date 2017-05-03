@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import razorthink.models.Payee;
 import razorthink.models.Transaction;
-
 import javax.transaction.Transactional;
 
 /**
@@ -38,8 +37,7 @@ public class TransactionDao
     public Payee getByPayeeId(long payee_id)
     {
         return (Payee) getSession().createQuery("from Payee where payee_id = :payee_id")
-                .setParameter("PayeeeId", payee_id)
+                .setParameter("payee_id", payee_id)
                 .uniqueResult();
     }
-
 }

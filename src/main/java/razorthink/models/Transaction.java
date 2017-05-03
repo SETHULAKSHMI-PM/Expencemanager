@@ -23,14 +23,12 @@ public class Transaction
     @NotNull
     private double transaction_amount;
 
-    /*@NotNull
-    private Date transaction_date;*/
-
     private String transaction_desc;
 
-    /*@NotNull
-    private boolean transaction_is_active;
-*/
+    private String category_name1;
+
+    private String payee_name1;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PayeeId")
     private Payee payee;
@@ -43,19 +41,20 @@ public class Transaction
         this.payee = payee;
     }
 
-    public Transaction() {
+    public Transaction(String transaction_type, double transaction_amount, String transaction_desc) {
     }
 
     public Transaction(long value){
         this.transactionId = value;
     }
 
-    public Transaction(String transaction_type, double transaction_amount, String transaction_desc) {
+    public Transaction(String transaction_type, double transaction_amount, String transaction_desc, String category_name1, String payee_name1)
+    {
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
-       // this.transaction_date = transaction_date;
         this.transaction_desc = transaction_desc;
-       // this.transaction_is_active = transaction_is_active;
+        this.category_name1 = category_name1;
+        this.payee_name1 = payee_name1;
     }
 
     public long getTransactionId() {
@@ -82,14 +81,6 @@ public class Transaction
         this.transaction_amount = transaction_amount;
     }
 
-    /*public Date getTransaction_date() {
-        return transaction_date;
-    }
-
-    public void setTransaction_date(Date transaction_date) {
-        this.transaction_date = transaction_date;
-    }*/
-
     public String getTransaction_desc() {
         return transaction_desc;
     }
@@ -98,11 +89,19 @@ public class Transaction
         this.transaction_desc = transaction_desc;
     }
 
-    /*public boolean isTransaction_is_active() {
-        return transaction_is_active;
+    public String getCategory_name1() {
+        return category_name1;
     }
 
-    public void setTransaction_is_active(boolean transaction_is_active) {
-        this.transaction_is_active = transaction_is_active;
-    }*/
+    public void setCategory_name1(String category_name1) {
+        category_name1 = category_name1;
+    }
+
+    public String getPayee_name1() {
+        return payee_name1;
+    }
+
+    public void setPayee_name1(String payee_name1) {
+        this.payee_name1 = payee_name1;
+    }
 }

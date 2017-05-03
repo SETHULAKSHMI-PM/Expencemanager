@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import razorthink.dao.PayeeDao;
-import razorthink.dao.TransactionDao;
+import razorthink.dao.*;
+import razorthink.models.Account;
 import razorthink.models.Payee;
 import razorthink.models.Transaction;
+import razorthink.models.User;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -23,22 +24,30 @@ public class TransactionController
     private TransactionDao transactionDao;
     @Autowired
     private PayeeDao payeeDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private CategoryDao categoryDao;
+    @Autowired
+    private AccountDao accountDao;
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(long payee_id, String category_name, String transaction_type, double transaction_amount, String transaction_desc)
+    public String save(long payee_id, String transaction_type, double transaction_amount, String transaction_desc)
     {
         try
         {
             Payee payee = transactionDao.getByPayeeId(payee_id);
 
             Collection<Transaction> transactions = new ArrayList<Transaction>();
-            Transaction transaction = new Transaction(transaction_type, transaction_amount, transaction_desc);
-            transactions.add(transaction);
+            String name = payee.getCategory().getCategory_name();
+            String name1 = payee.getPayee_name();
 
-            payee.setTransaction(transactions);
-            String name=payee.getCategory().getCategory_name();
+            Transaction transaction = new Transaction(transaction_type, transaction_amount, transaction_desc,name,name1);
             transaction.setPayee(payee);
+
+            transactions.add(transaction);
+            payee.setTransaction(transactions);
             transactionDao.save(transaction);
         }
         catch (Exception e)
@@ -63,5 +72,4 @@ public class TransactionController
         }
         return "Deleted successfully";
     }
-
 }

@@ -23,6 +23,8 @@ public class Payee
 
     private String payee_desc;
 
+    private String category_name_payee;
+
     /* @NotNull
     private boolean payee_is_active;*/
 
@@ -59,9 +61,10 @@ public class Payee
         this.payee_id = value;
     }
 
-    public Payee(String payee_name, String payee_desc) {
+    public Payee(String payee_name, String payee_desc, String category_name_payee) {
         this.payee_name = payee_name;
         this.payee_desc = payee_desc;
+        this.category_name_payee = category_name_payee;
     }
 
     public long getPayee_id() {
@@ -86,6 +89,14 @@ public class Payee
 
     public void setPayee_desc(String payee_desc) {
         this.payee_desc = payee_desc;
+    }
+
+    public String getCategory_name_payee() {
+        return category_name_payee;
+    }
+
+    public void setCategory_name_payee(String category_name_payee) {
+        this.category_name_payee = category_name_payee;
     }
 
     /*public boolean isPayee_is_active() {

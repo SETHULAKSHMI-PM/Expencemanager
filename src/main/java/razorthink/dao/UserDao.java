@@ -34,6 +34,8 @@ public class UserDao
     {
         getSession().delete(user);
     }
+
+
 }
 
 

@@ -8,7 +8,6 @@ import razorthink.dao.CategoryDao;
 import razorthink.dao.PayeeDao;
 import razorthink.models.Category;
 import razorthink.models.Payee;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -29,24 +28,39 @@ public class PayeeController
     @ResponseBody
     public String save(String category_name, String category_desc,String payee_name, String payee_desc)
     {
-        try
+        String category_name_dup = String.valueOf(categoryDao.getByCategoryName(category_name));
+        String payee_name_duplicate = String.valueOf(payeeDao.getByPayeeName(payee_name));
+
+        if(category_name_dup.equals("null") && (payee_name_duplicate.equals("null")))
         {
-            Category category1 = new Category(category_name, category_desc);
-            categoryDao.save(category1);
+            try
+            {
+                Category category1 = new Category(category_name, category_desc);
+                String cat_name = category1.getCategory_name();
+                categoryDao.save(category1);
 
-            Collection<Payee> payees = new ArrayList<Payee>();
-            Payee payee = new Payee(payee_name, payee_desc);
-            payees.add(payee);
+                Collection<Payee> payees = new ArrayList<Payee>();
+                Payee payee = new Payee(payee_name, payee_desc, category_name);
+                payees.add(payee);
 
-            category1.setPayees(payees);
-            payee.setCategory(category1);
+                category1.setPayees(payees);
+                payee.setCategory(category1);
 
-            payeeDao.save(payee);
+                payeeDao.save(payee);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Saved successfully";
         }
-        catch (Exception e)
+        /*else if (category_name_dup.equals("not null") && (payee_name_duplicate.equals("null")))
+            {
+                return "Payee name already exists";
+            }
+        }*/
+        else
         {
-            e.printStackTrace();
+            return "Category name already existing";
         }
-        return "Saved successfully";
     }
 }

@@ -1,12 +1,10 @@
 package razorthink.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import razorthink.dao.CategoryDao;
-import razorthink.dao.PayeeDao;
 import razorthink.models.Category;
 
 /**
@@ -24,8 +22,23 @@ public class CategoryController
     @ResponseBody
     public String save(String category_name, String category_desc)
     {
-        Category category = new Category(category_name, category_desc);
-        categoryDao.save(category);
-        return "Saved successfully";
+        String cat_name = String.valueOf(categoryDao.getByCategoryName(category_name));
+        if(cat_name.equals("null"))
+        {
+            try
+            {
+                Category category = new Category(category_name, category_desc);
+                categoryDao.save(category);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return "Category Saved successfully. ";
+        }
+        else
+        {
+            return "Category Name is already existing";
+        }
     }
 }
