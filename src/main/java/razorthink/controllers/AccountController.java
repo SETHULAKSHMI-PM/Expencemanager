@@ -29,15 +29,14 @@ public class AccountController
 
     @RequestMapping("/save")
     @ResponseBody
-    public String save(long user_id, String account_name, String account_desc)
+    public String save(long user_id, String account_name, String account_desc, double account_amount)
     {
-
         try
         {
             User user = accountDao.getByUserId(user_id);
 
             Collection<Account> accounts = new ArrayList<Account>();
-            Account account = new Account(account_name, account_desc);
+            Account account = new Account(account_name, account_desc, account_amount);
             accounts.add(account);
 
             user.setAccount(accounts);

@@ -31,7 +31,7 @@ public class PayeeController
         String category_name_dup = String.valueOf(categoryDao.getByCategoryName(category_name));
         String payee_name_duplicate = String.valueOf(payeeDao.getByPayeeName(payee_name));
 
-        if(category_name_dup.equals("null") && (payee_name_duplicate.equals("null")))
+        if((category_name_dup.equals("null")) && (payee_name_duplicate.equals("null")))
         {
             try
             {
@@ -53,11 +53,23 @@ public class PayeeController
             }
             return "Saved successfully";
         }
-        /*else if (category_name_dup.equals("not null") && (payee_name_duplicate.equals("null")))
+        else if(!(category_name_dup.equals("null")) && (payee_name_duplicate.equals("null")))
+        {
+            try
             {
-                return "Payee name already exists";
+                Category category = categoryDao.getByCategoryName(category_name);
+                Collection<Payee> payees = new ArrayList<Payee>();
+                Payee payee = new Payee(payee_name, payee_desc, category_name);
+                payees.add(payee);
+                category.setPayees(payees);
+                payee.setCategory(category);
+                payeeDao.save(payee);
             }
-        }*/
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            return "Payee saved successfully";
+        }
         else
         {
             return "Category name already existing";

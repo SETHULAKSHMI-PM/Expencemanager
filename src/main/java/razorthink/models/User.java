@@ -18,21 +18,19 @@ public class User
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_id;
 
-    @NotNull
+
     private String user_name;
 
-    @NotNull
+
     private String user_email;
 
-    @NotNull
-    private String user_password;
+    private long user_password;
 
-   /* @NotNull
-    private boolean user_is_ative;
+    /*@NotNull
+    private boolean user_is_ative;*/
 
-    @NotNull
-    private double user_total_balance;
-*/
+    /*private double user_total_balance;*/
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<Account> account = new ArrayList<Account>();
 
@@ -54,7 +52,7 @@ public class User
         this.user_id = value;
     }
 
-    public User(String user_name, String user_email, String user_password)
+    public User(String user_name, String user_email, long user_password)
     {
         this.user_name = user_name;
         this.user_email = user_email;
@@ -88,11 +86,11 @@ public class User
         this.user_email = user_email;
     }
 
-    public String getUser_password() {
+    public long getUser_password() {
         return user_password;
     }
 
-    public void setUser_password(String user_password) {
+    public void setUser_password(long user_password) {
         this.user_password = user_password;
     }
 
