@@ -4,8 +4,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import razorthink.models.Account;
 import razorthink.models.Payee;
 import razorthink.models.Transaction;
+import razorthink.models.User;
+
 import javax.transaction.Transactional;
 
 /**
@@ -38,6 +41,26 @@ public class TransactionDao
     {
         return (Payee) getSession().createQuery("from Payee where payee_id = :payee_id")
                 .setParameter("payee_id", payee_id)
+                .uniqueResult();
+    }
+
+    public Payee getByPayeeIdByUsingName(String payee_name)
+    {
+        return (Payee) getSession().createQuery("from Payee where payee_name = :payee_name")
+                .setParameter("payee_name", payee_name)
+                .uniqueResult();
+    }
+    public User getByUserId(long user_id)
+    {
+        return (User) getSession().createQuery("from User where user_id = :user_id")
+                .setParameter("user_id", user_id)
+                .uniqueResult();
+    }
+
+    public Account getByAccountId(String account_name)
+    {
+        return (Account) getSession().createQuery("from Account where account_id = :account_id")
+                .setParameter("account_name", account_name)
                 .uniqueResult();
     }
 }

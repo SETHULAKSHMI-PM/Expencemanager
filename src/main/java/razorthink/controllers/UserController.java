@@ -1,36 +1,34 @@
 package razorthink.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import razorthink.dao.UserDao;
 import razorthink.models.User;
+import razorthink.pojo.UserPojo;
 import razorthink.utils.MurmurHash;
 
 /**
  * Created by sethulakshmi on 24/4/17.
  */
 
-@Controller
-@RequestMapping(value = "/user")
+@RestController
+@RequestMapping(value = "rest/user")
 public class UserController
 {
     @Autowired
     private UserDao userDao;
 
     //Save user details
-    @RequestMapping("/save")
-    @ResponseBody
-    public String save(String user_name, String user_email, String user_password)
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public String save(@RequestBody UserPojo userPojo)
     {
-        /*User user=userDao.getByUsername(user_name);
-        if(user.equals(null))
-        {*/
+        User user=userDao.getByUsername(userPojo.getUser_name());
+        if(user==null)
+        {
             try
             {
-                long encrypted_password = MurmurHash.hash32(user_password);
-                User user1 = new User(user_name, user_email, encrypted_password);
+                long encrypted_password = MurmurHash.hash32(userPojo.getUser_password());
+                User user1 = new User(userPojo.getUser_name(), userPojo.getUser_email(), encrypted_password);
                 userDao.save(user1);
             }
             catch (Exception e)
@@ -38,15 +36,15 @@ public class UserController
                 e.printStackTrace();
             }
             return "successfully saved";
-        /*}
+        }
         else
         {
             return "Username is already used";
-        }*/
+        }
     }
 
     //delete user details based on user_id
-    @RequestMapping("/delete")
+    @RequestMapping("delete")
     @ResponseBody
     public String delete(long user_id)
     {
@@ -62,7 +60,7 @@ public class UserController
         return "Successfully Deleted";
     }
 
-    /*//display user details based on user_id
+  /*  //display user details based on user_id
     @RequestMapping("/view")
     @ResponseBody
     public String view(long user_id)
@@ -78,5 +76,4 @@ public class UserController
         return "view";
     }
 */
-
 }

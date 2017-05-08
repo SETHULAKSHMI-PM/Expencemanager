@@ -23,22 +23,23 @@ public class Payee
 
     private String payee_desc;
 
-    private String category_name_payee;
 
-    /* @NotNull
-    private boolean payee_is_active;*/
 
+//One to Many mapping with Payee and Transaction
     @OneToMany(mappedBy = "payee", cascade = CascadeType.ALL)
     private Collection<Transaction> transaction = new ArrayList<Transaction>();
 
-    public Collection<Transaction> getTransaction() {
+    public Collection<Transaction> getTransaction()
+    {
         return transaction;
     }
 
-    public void setTransaction(Collection<Transaction> transaction) {
+    public void setTransaction(Collection<Transaction> transaction)
+    {
         this.transaction = transaction;
     }
 
+//Many to One mapping with Payee and Category
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CategoryId")
     private Category category;
@@ -51,6 +52,9 @@ public class Payee
         this.category = category;
     }
 
+
+
+//Constructors
     public Payee() {
     }
 
@@ -61,12 +65,14 @@ public class Payee
         this.payee_id = value;
     }
 
-    public Payee(String payee_name, String payee_desc, String category_name_payee) {
+    public Payee(String payee_name, String payee_desc) {
         this.payee_name = payee_name;
         this.payee_desc = payee_desc;
-        this.category_name_payee = category_name_payee;
     }
 
+
+
+//Getters and Setters
     public long getPayee_id() {
         return payee_id;
     }
@@ -90,20 +96,4 @@ public class Payee
     public void setPayee_desc(String payee_desc) {
         this.payee_desc = payee_desc;
     }
-
-    public String getCategory_name_payee() {
-        return category_name_payee;
-    }
-
-    public void setCategory_name_payee(String category_name_payee) {
-        this.category_name_payee = category_name_payee;
-    }
-
-    /*public boolean isPayee_is_active() {
-        return payee_is_active;
-    }
-
-    public void setPayee_is_active(boolean payee_is_active) {
-        this.payee_is_active = payee_is_active;
-    }*/
 }

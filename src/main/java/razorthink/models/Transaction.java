@@ -2,8 +2,6 @@ package razorthink.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.soap.Text;
-import java.util.Date;
 
 /**
  * Created by sethulakshmi on 26/4/17.
@@ -11,8 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction
-{
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long transactionId;
@@ -25,38 +22,57 @@ public class Transaction
 
     private String transaction_desc;
 
-    private String category_name1;
+    private long categoryId;
 
-    private String payee_name1;
+    private long userId;
 
+    private long accountId;
+
+//Many to one mapping with Payee and Transaction
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PayeeId")
     private Payee payee;
 
-    public Payee getPayee() {
+    public Payee getPayee()
+    {
         return payee;
     }
 
-    public void setPayee(Payee payee) {
+    public void setPayee(Payee payee)
+    {
         this.payee = payee;
     }
 
-    public Transaction(String transaction_type, double transaction_amount, String transaction_desc) {
+
+
+
+    //Constructors
+
+    public Transaction() {
     }
 
-    public Transaction(long value){
+    public Transaction(long value)
+    {
         this.transactionId = value;
     }
-
-    public Transaction(String transaction_type, double transaction_amount, String transaction_desc, String category_name1, String payee_name1)
-    {
+    public Transaction(String transaction_type, double transaction_amount, String transaction_desc) {
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
         this.transaction_desc = transaction_desc;
-        this.category_name1 = category_name1;
-        this.payee_name1 = payee_name1;
+
     }
 
+    public Transaction(String transaction_type, double transaction_amount, String transaction_desc, long categoryId, long userId, long accountId, Payee payee) {
+        this.transaction_type = transaction_type;
+        this.transaction_amount = transaction_amount;
+        this.transaction_desc = transaction_desc;
+        this.categoryId = categoryId;
+        this.userId = userId;
+        this.accountId = accountId;
+        this.payee = payee;
+    }
+
+    //Getters and Setters
     public long getTransactionId() {
         return transactionId;
     }
@@ -89,19 +105,27 @@ public class Transaction
         this.transaction_desc = transaction_desc;
     }
 
-    public String getCategory_name1() {
-        return category_name1;
+    public long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_name1(String category_name1) {
-        category_name1 = category_name1;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getPayee_name1() {
-        return payee_name1;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setPayee_name1(String payee_name1) {
-        this.payee_name1 = payee_name1;
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 }

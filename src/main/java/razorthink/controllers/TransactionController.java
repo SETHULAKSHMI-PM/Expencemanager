@@ -1,21 +1,26 @@
 package razorthink.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import razorthink.dao.*;
+import razorthink.models.Account;
 import razorthink.models.Payee;
 import razorthink.models.Transaction;
+import razorthink.models.User;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import static razorthink.controllers.LoginUser.loginUserId;
 
 /**
  * Created by sethulakshmi on 28/4/17.
  */
 
-@Controller
-@RequestMapping("/transaction")
+@RestController
+@RequestMapping(value = "rest/transaction")
 public class TransactionController
 {
     @Autowired
@@ -29,22 +34,33 @@ public class TransactionController
     @Autowired
     private AccountDao accountDao;
 
-    @RequestMapping("/save")
-    @ResponseBody
-    public String save(long payee_id, String transaction_type, double transaction_amount, String transaction_desc)
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public String save(String transaction_type, String payee_name, String account_name, double transaction_amount, String transaction_desc)
     {
+        if(loginUserId==0){
+            return "Please Do User Login";
+        }
+        else {
         try
         {
-            Payee payee = transactionDao.getByPayeeId(payee_id);
+            User user = transactionDao.getByUserId(loginUserId);
+            long Id = user.getUser_id();
+
+            Payee payee = transactionDao.getByPayeeIdByUsingName(payee_name);
+            long payeeId = payee.getPayee_id();
+            long categoryId = payee.getCategory().getCategory_id();
+
+            Account account = transactionDao.getByAccountId(account_name);
 
             Collection<Transaction> transactions = new ArrayList<Transaction>();
-            String name = payee.getCategory().getCategory_name();
-            String name1 = payee.getPayee_name();
 
-            Transaction transaction = new Transaction(transaction_type, transaction_amount, transaction_desc,name,name1);
+            Transaction transaction = new Transaction(transaction_type, transaction_amount, transaction_desc);
             transaction.setPayee(payee);
 
+            transaction.setUserId(Id);
+
             transactions.add(transaction);
+
             payee.setTransaction(transactions);
             transactionDao.save(transaction);
         }
@@ -53,9 +69,11 @@ public class TransactionController
             e.printStackTrace();
         }
         return "Saved successfully";
+        }
+
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("delete")
     @ResponseBody
     public String delete(long transactionId)
     {

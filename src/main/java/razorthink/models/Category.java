@@ -22,17 +22,25 @@ public class Category
 
     private String category_desc;
 
+
+
+//One to Many mapping with Category and Payee
     @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private Collection<Payee> payees = new ArrayList<Payee>();
 
-    public Collection<Payee> getPayees() {
+    public Collection<Payee> getPayees()
+    {
         return payees;
     }
 
-    public void setPayees(Collection<Payee> payees) {
+    public void setPayees(Collection<Payee> payees)
+    {
         this.payees = payees;
     }
 
+
+
+//Constructors
     public Category() {
     }
 
@@ -45,6 +53,9 @@ public class Category
         this.category_desc = category_desc;
     }
 
+
+
+//Getters and Setters
     public long getCategory_id() {
         return category_id;
     }
@@ -68,12 +79,4 @@ public class Category
     public void setCategory_desc(String category_desc) {
         this.category_desc = category_desc;
     }
-
-  /*  public boolean isCategory_is_active() {
-        return category_is_active;
-    }
-
-    public void setCategory_is_active(boolean category_is_active) {
-        this.category_is_active = category_is_active;
-    }*/
 }

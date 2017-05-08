@@ -18,19 +18,20 @@ public class User
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long user_id;
 
-
+    @NotNull
     private String user_name;
 
-
+    @NotNull
     private String user_email;
 
+    @NotNull
     private long user_password;
 
-    /*@NotNull
-    private boolean user_is_ative;*/
+    public double user_total_balance = 0;
 
-    /*private double user_total_balance;*/
 
+
+//One to many mapping with User and Account
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Collection<Account> account = new ArrayList<Account>();
 
@@ -42,8 +43,22 @@ public class User
     {
         this.account = account;
     }
+/*
+//One to many mapping with User and Transactions
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Collection<Transaction> transactions = new ArrayList<Transaction>();
 
-    //constructors
+    public Collection<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Collection<Transaction> transactions) {
+        this.transactions = transactions;
+    }*/
+
+
+
+//Constructors
     public User()
     {
     }
@@ -57,11 +72,11 @@ public class User
         this.user_name = user_name;
         this.user_email = user_email;
         this.user_password = user_password;
-        /*this.user_is_ative = user_is_ative;
-        this.user_total_balance = user_total_balance;*/
     }
 
-    //Getters and setters
+
+
+//Getters and setters
     public long getUser_id() {
         return user_id;
     }
@@ -94,19 +109,11 @@ public class User
         this.user_password = user_password;
     }
 
-   /* public boolean isUser_is_ative() {
-        return user_is_ative;
-    }
-
-    public void setUser_is_ative(boolean user_is_ative) {
-        this.user_is_ative = user_is_ative;
-    }
-
     public double getUser_total_balance() {
         return user_total_balance;
     }
 
     public void setUser_total_balance(double user_total_balance) {
         this.user_total_balance = user_total_balance;
-    }*/
+    }
 }

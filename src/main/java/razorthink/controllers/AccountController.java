@@ -1,25 +1,23 @@
 package razorthink.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import razorthink.dao.AccountDao;
-import razorthink.dao.TransactionDao;
 import razorthink.dao.UserDao;
 import razorthink.models.Account;
 import razorthink.models.User;
+import razorthink.pojo.AccountPojo;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 import java.util.Collection;
+import static razorthink.controllers.LoginUser.loginUserId;
 
 /**
  * Created by sethulakshmi on 25/4/17.
  */
 
-@Controller
-@RequestMapping("/account")
+@RestController
+@RequestMapping(value = "rest/account")
 public class AccountController
 {
     @Autowired
@@ -27,31 +25,36 @@ public class AccountController
     @Autowired
     private UserDao userDao;
 
-    @RequestMapping("/save")
-    @ResponseBody
-    public String save(long user_id, String account_name, String account_desc, double account_amount)
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public String save(@RequestBody AccountPojo accountPojo)
     {
-        try
+        double balance=0;
+        if (loginUserId == 0)
         {
-            User user = accountDao.getByUserId(user_id);
-
-            Collection<Account> accounts = new ArrayList<Account>();
-            Account account = new Account(account_name, account_desc, account_amount);
-            accounts.add(account);
-
-            user.setAccount(accounts);
-            account.setUser(user);
-
-            accountDao.save(account);
+            return "Please Do User Login";
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+        else {
+            try {
+                User user = accountDao.getByUserId(loginUserId);
+
+                Collection<Account> accounts = new ArrayList<Account>();
+                Account account = new Account(accountPojo.getAccount_name(), accountPojo.getAccount_desc(), accountPojo.getAccount_amount());
+                accounts.add(account);
+
+                balance = user.getUser_total_balance() + accountPojo.getAccount_amount();
+                user.setUser_total_balance(balance);
+                user.setAccount(accounts);
+                account.setUser(user);
+
+                accountDao.save(account);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Account saved sucessfully "+balance;
         }
-        return "Account saved sucessfully";
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("delete")
     @ResponseBody
     public String delete(long account_id)
     {
@@ -83,3 +86,4 @@ public class AccountController
         return "Updated successfully";
     }*/
 }
+
