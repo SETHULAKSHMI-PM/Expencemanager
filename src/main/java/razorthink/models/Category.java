@@ -52,6 +52,9 @@ public class Category
         this.category_name = category_name;
         this.category_desc = category_desc;
     }
+    public Category(String category_name){
+        this.category_name = category_name;
+    }
 
 
 

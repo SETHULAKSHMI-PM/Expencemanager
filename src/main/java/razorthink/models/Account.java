@@ -2,6 +2,8 @@ package razorthink.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by sethulakshmi on 24/4/17.
@@ -36,6 +38,17 @@ public class Account
     public void setUser(User user)
     {
         this.user = user;
+    }
+//One to many mapping with Account and Transaction
+    @OneToMany(cascade = CascadeType.ALL)
+    private Collection<Transaction> transactions = new ArrayList<Transaction>();
+
+    public Collection<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Collection<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
 

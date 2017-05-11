@@ -1,16 +1,10 @@
 package razorthink.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import razorthink.dao.*;
-import razorthink.models.Account;
-import razorthink.models.Payee;
-import razorthink.models.Transaction;
-import razorthink.models.User;
-
+import razorthink.models.*;
+import razorthink.pojo.TransactionPojo;
 import java.util.ArrayList;
 import java.util.Collection;
 import static razorthink.controllers.LoginUser.loginUserId;
@@ -35,42 +29,99 @@ public class TransactionController
     private AccountDao accountDao;
 
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(String transaction_type, String payee_name, String account_name, double transaction_amount, String transaction_desc)
+    public String save(@RequestBody TransactionPojo transactionPojo)
     {
-        if(loginUserId==0){
+        String payeeNameDuplication = String.valueOf(payeeDao.getByPayeeName(transactionPojo.getPayee_name()));
+        String accountNameDuplication = String.valueOf(accountDao.getByAccountName(transactionPojo.getAccount_name()));
+        String categoryNameDupilcation = String.valueOf(categoryDao.getByCategoryName(transactionPojo.getCategory_name()));
+
+        //User do not logged in, then do user login
+        if(loginUserId==0)
+        {
             return "Please Do User Login";
         }
-        else {
-        try
+        //Checks for account existing ot not.
+        else if(accountNameDuplication.equals("null"))
         {
-            User user = transactionDao.getByUserId(loginUserId);
-            long Id = user.getUser_id();
+            return "Account not existing, Please careate Account details";
 
-            Payee payee = transactionDao.getByPayeeIdByUsingName(payee_name);
-            long payeeId = payee.getPayee_id();
-            long categoryId = payee.getCategory().getCategory_id();
-
-            Account account = transactionDao.getByAccountId(account_name);
-
-            Collection<Transaction> transactions = new ArrayList<Transaction>();
-
-            Transaction transaction = new Transaction(transaction_type, transaction_amount, transaction_desc);
-            transaction.setPayee(payee);
-
-            transaction.setUserId(Id);
-
-            transactions.add(transaction);
-
-            payee.setTransaction(transactions);
-            transactionDao.save(transaction);
         }
-        catch (Exception e)
+        //If payment name is not existing but its category exists
+        else if((payeeNameDuplication.equals("null")) && (!(categoryNameDupilcation.equals("null"))))
+        {//create payee under the given category
+            try
+            {
+                Category category = categoryDao.getByCategoryName(transactionPojo.getCategory_name());
+
+                Collection<Payee> payees = new ArrayList<Payee>();
+                Payee payee = new Payee(transactionPojo.getPayee_name());
+                payees.add(payee);
+
+                category.setPayees(payees);
+                payee.setCategory(category);
+
+                payeeDao.save(payee);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+            transactionSaving(transactionPojo);
+            return "Payee name is not existing, but its category exists. ";
+        }
+        //payee name and category name not existing
+        else if((payeeNameDuplication.equals("null")) && (categoryNameDupilcation.equals("null")))
         {
-            e.printStackTrace();
-        }
-        return "Saved successfully";
-        }
+            try
+            {
+                Category category1 = new Category(transactionPojo.getCategory_name());
+                categoryDao.save(category1);
 
+                Collection<Payee> payees = new ArrayList<Payee>();
+                Payee payee = new Payee(transactionPojo.getPayee_name());
+                payees.add(payee);
+
+                category1.setPayees(payees);
+                payee.setCategory(category1);
+
+                payeeDao.save(payee);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            transactionSaving(transactionPojo);
+            return "payee name and category name not existing.";
+        }
+        //payee name and category name existing but mapping mismatched
+       /* else if(!(payeeNameDuplication.equals("null")) && (!(categoryNameDupilcation.equals("null"))))
+        {
+            Payee payee = payeeDao.getByPayeeName(transactionPojo.getPayee_name());
+            long payeeCategoryId1 = payee.getCategory().getCategory_id();
+
+            Category category = categoryDao.getByCategoryName(transactionPojo.getCategory_name());
+            long payeeCategoryId2 = category.getCategory_id();
+
+            //given payee name belongs to given category
+            if(payeeCategoryId1 == payeeCategoryId2) {
+                transactionSaving(transactionPojo);
+                return "payee name and category name existing but mapping mismatched : ";
+            }
+
+            //given payee and category mapping mismatcched
+            else {
+
+                return "sds";
+            }
+        }
+        START WORKING FROM HEREEEEE......
+        */
+
+        else
+        {
+            transactionSaving(transactionPojo);
+            return "Transaction Saved successfully ";
+        }
     }
 
     @RequestMapping("delete")
@@ -87,5 +138,51 @@ public class TransactionController
             e.printStackTrace();
         }
         return "Deleted successfully";
+    }
+
+    //For transaction details saving
+    private String transactionSaving(TransactionPojo transactionPojo)
+    {
+        double userNewTotalBalance=0;
+        double accountNewBalance=0;
+        try
+        {
+            User user = transactionDao.getByUserId(loginUserId);
+            long Id = user.getUser_id();
+
+            Payee payee = payeeDao.getByPayeeName(transactionPojo.getPayee_name());
+            long categoryId = payee.getCategory().getCategory_id();
+
+            Account account = transactionDao.getByAccountIdByUsingName(transactionPojo.getAccount_name());
+
+            Collection<Transaction> transactions = new ArrayList<Transaction>();
+
+            Transaction transaction = new Transaction(transactionPojo.getTransaction_type(), transactionPojo.getTransaction_amount(), transactionPojo.getTransaction_desc());
+            transaction.setUserId(Id);
+            transaction.setCategoryId(categoryId);
+            transactions.add(transaction);
+
+            userNewTotalBalance = user.getUser_total_balance() - transactionPojo.getTransaction_amount();
+            accountNewBalance = account.getAccount_amount() - transactionPojo.getTransaction_amount();
+
+            user.setUser_total_balance(userNewTotalBalance);
+
+
+            account.setAccount_amount(accountNewBalance);
+
+            payee.setTransaction(transactions);
+            transaction.setPayee(payee);
+
+            account.setTransactions(transactions);
+            transaction.setAccount(account);
+
+            transactionDao.save(transaction);
+            userDao.update(user);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return "Transaction Saved successfully ";
     }
 }

@@ -36,9 +36,16 @@ public class UserDao
         getSession().delete(user);
     }
 
+    //update user
+    public void update(User user){
+        getSession().update(user);
+    }
+
+
     public User getByUserDetails(String user_name, long user_password)
     {
-        return (User) getSession().createQuery("from User where user_name = :user_name and user_password = :user_password")
+        return (User) getSession()
+                .createQuery("from User where user_name = :user_name and user_password = :user_password")
                 .setParameter("user_name", user_name).setParameter("user_password", user_password)
                 .uniqueResult();
     }

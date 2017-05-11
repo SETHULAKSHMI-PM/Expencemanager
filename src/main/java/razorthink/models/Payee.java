@@ -69,6 +69,9 @@ public class Payee
         this.payee_name = payee_name;
         this.payee_desc = payee_desc;
     }
+    public Payee(String payee_name){
+        this.payee_name=payee_name;
+    }
 
 
 

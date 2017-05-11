@@ -41,10 +41,10 @@ public class AccountDao
                 .setParameter("user_id", user_id)
                 .uniqueResult();
     }
-
-   /* public void update(Account account)
+    public Account getByAccountName(String account_name)
     {
-        getSession().update(account);
-        return;
-    }*/
+        return (Account) getSession().createQuery("from Account where account_name = :account_name")
+                .setParameter("account_name", account_name)
+                .uniqueResult();
+    }
 }

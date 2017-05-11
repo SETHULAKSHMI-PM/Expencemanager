@@ -18,7 +18,7 @@ public class Transaction {
     private String transaction_type;
 
     @NotNull
-    private double transaction_amount;
+    private double transaction_amount;//income or expense
 
     private String transaction_desc;
 
@@ -26,35 +26,42 @@ public class Transaction {
 
     private long userId;
 
-    private long accountId;
 
-//Many to one mapping with Payee and Transaction
+    //Many to one mapping with Transaction and Payee
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PayeeId")
     private Payee payee;
 
-    public Payee getPayee()
-    {
+    public Payee getPayee() {
         return payee;
     }
 
-    public void setPayee(Payee payee)
-    {
+    public void setPayee(Payee payee) {
         this.payee = payee;
     }
 
+    //Many to One mapping with Transaction and Account
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "accountId")
+    private Account account;
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
 
     //Constructors
-
     public Transaction() {
     }
 
-    public Transaction(long value)
-    {
+    public Transaction(long value) {
         this.transactionId = value;
     }
+
     public Transaction(String transaction_type, double transaction_amount, String transaction_desc) {
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
@@ -62,14 +69,14 @@ public class Transaction {
 
     }
 
-    public Transaction(String transaction_type, double transaction_amount, String transaction_desc, long categoryId, long userId, long accountId, Payee payee) {
+    public Transaction(String transaction_type, double transaction_amount, String transaction_desc, long categoryId, long userId, Payee payee, Account account) {
         this.transaction_type = transaction_type;
         this.transaction_amount = transaction_amount;
         this.transaction_desc = transaction_desc;
         this.categoryId = categoryId;
         this.userId = userId;
-        this.accountId = accountId;
         this.payee = payee;
+        this.account = account;
     }
 
     //Getters and Setters
@@ -119,13 +126,5 @@ public class Transaction {
 
     public void setUserId(long userId) {
         this.userId = userId;
-    }
-
-    public long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(long accountId) {
-        this.accountId = accountId;
     }
 }

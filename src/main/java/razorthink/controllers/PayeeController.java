@@ -31,16 +31,16 @@ public class PayeeController
         String category_name_dup = String.valueOf(categoryDao.getByCategoryName(payeePojo.getCategory_name()));
         String payee_name_duplicate = String.valueOf(payeeDao.getByPayeeName(payeePojo.getPayee_name()));
 
+        //both category name and payee name is not existing
         if((category_name_dup.equals("null")) && (payee_name_duplicate.equals("null")))
         {
             try
             {
                 Category category1 = new Category(payeePojo.getCategory_name(), payeePojo.getCategory_desc());
-               /* String cat_name = category1.getCategory_name();*/
                 categoryDao.save(category1);
 
                 Collection<Payee> payees = new ArrayList<Payee>();
-                Payee payee = new Payee(payeePojo.getPayee_name(), payeePojo.getPayee_desc()/*, payeePojo.getCategory_name()*/);
+                Payee payee = new Payee(payeePojo.getPayee_name(), payeePojo.getPayee_desc());
                 payees.add(payee);
 
                 category1.setPayees(payees);
@@ -53,16 +53,21 @@ public class PayeeController
             }
             return "Saved successfully";
         }
+
+        //category name exists, but its payee name not existing.
         else if(!(category_name_dup.equals("null")) && (payee_name_duplicate.equals("null")))
         {
             try
             {
                 Category category = categoryDao.getByCategoryName(payeePojo.getCategory_name());
+
                 Collection<Payee> payees = new ArrayList<Payee>();
-                Payee payee = new Payee(payeePojo.getPayee_name(), payeePojo.getPayee_desc()/*, payeePojo.getCategory_name()*/);
+                Payee payee = new Payee(payeePojo.getPayee_name(), payeePojo.getPayee_desc());
                 payees.add(payee);
+
                 category.setPayees(payees);
                 payee.setCategory(category);
+
                 payeeDao.save(payee);
             }
             catch (Exception e){
@@ -70,6 +75,8 @@ public class PayeeController
             }
             return "Payee saved successfully";
         }
+
+        //catogry name exists.
         else
         {
             return "Category name already existing";

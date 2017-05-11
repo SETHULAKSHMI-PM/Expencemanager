@@ -44,12 +44,6 @@ public class TransactionDao
                 .uniqueResult();
     }
 
-    public Payee getByPayeeIdByUsingName(String payee_name)
-    {
-        return (Payee) getSession().createQuery("from Payee where payee_name = :payee_name")
-                .setParameter("payee_name", payee_name)
-                .uniqueResult();
-    }
     public User getByUserId(long user_id)
     {
         return (User) getSession().createQuery("from User where user_id = :user_id")
@@ -57,9 +51,9 @@ public class TransactionDao
                 .uniqueResult();
     }
 
-    public Account getByAccountId(String account_name)
+    public Account getByAccountIdByUsingName(String account_name)
     {
-        return (Account) getSession().createQuery("from Account where account_id = :account_id")
+        return (Account) getSession().createQuery("from Account where account_name = :account_name")
                 .setParameter("account_name", account_name)
                 .uniqueResult();
     }

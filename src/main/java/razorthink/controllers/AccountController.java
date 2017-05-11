@@ -42,7 +42,9 @@ public class AccountController
                 accounts.add(account);
 
                 balance = user.getUser_total_balance() + accountPojo.getAccount_amount();
+
                 user.setUser_total_balance(balance);
+
                 user.setAccount(accounts);
                 account.setUser(user);
 
