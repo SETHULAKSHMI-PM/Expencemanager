@@ -93,8 +93,9 @@ public class TransactionController
             transactionSaving(transactionPojo);
             return "payee name and category name not existing.";
         }
+
         //payee name and category name existing but mapping mismatched
-       /* else if(!(payeeNameDuplication.equals("null")) && (!(categoryNameDupilcation.equals("null"))))
+        else if(!(payeeNameDuplication.equals("null")) && (!(categoryNameDupilcation.equals("null"))))
         {
             Payee payee = payeeDao.getByPayeeName(transactionPojo.getPayee_name());
             long payeeCategoryId1 = payee.getCategory().getCategory_id();
@@ -103,24 +104,24 @@ public class TransactionController
             long payeeCategoryId2 = category.getCategory_id();
 
             //given payee name belongs to given category
-            if(payeeCategoryId1 == payeeCategoryId2) {
+            if(payeeCategoryId1 == payeeCategoryId2)
+            {
                 transactionSaving(transactionPojo);
-                return "payee name and category name existing but mapping mismatched : ";
+                return "payee name and category name existing, mapping matched ";
             }
 
             //given payee and category mapping mismatcched
-            else {
-
-                return "sds";
+            else
+            {
+                Category category1 = categoryDao.getByCategoryName(transactionPojo.getCategory_name());
+                long id = category1.getCategory_id();
+                return "Given payee and category mapping mismatched, cat id of given cat name is : "+id;
             }
         }
-        START WORKING FROM HEREEEEE......
-        */
 
         else
         {
-            transactionSaving(transactionPojo);
-            return "Transaction Saved successfully ";
+            return "Something went Wrong, Please try again later";
         }
     }
 
