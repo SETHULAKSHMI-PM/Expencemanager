@@ -167,8 +167,7 @@ public class TransactionController
             accountNewBalance = account.getAccount_amount() - transactionPojo.getTransaction_amount();
 
             user.setUser_total_balance(userNewTotalBalance);
-
-
+            
             account.setAccount_amount(accountNewBalance);
 
             payee.setTransaction(transactions);

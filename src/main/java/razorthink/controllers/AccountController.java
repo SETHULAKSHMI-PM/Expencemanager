@@ -10,6 +10,7 @@ import razorthink.pojo.AccountPojo;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import static razorthink.controllers.LoginUser.loginUserId;
 
 /**
@@ -50,6 +51,7 @@ public class AccountController
 
                 accountDao.save(account);
             } catch (Exception e) {
+
                 e.printStackTrace();
             }
             return "Account saved sucessfully "+balance;
@@ -67,7 +69,7 @@ public class AccountController
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+           e.printStackTrace();
         }
         return "Deleted successfully";
     }

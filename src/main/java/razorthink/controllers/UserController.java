@@ -17,6 +17,7 @@ public class UserController
 {
     @Autowired
     private UserDao userDao;
+    String ab;
 
     //Save user details
     @RequestMapping(value = "save", method = RequestMethod.POST)
@@ -28,14 +29,15 @@ public class UserController
             try
             {
                 long encrypted_password = MurmurHash.hash32(userPojo.getUser_password());
-                User user1 = new User(userPojo.getUser_name(), userPojo.getUser_email(), encrypted_password);
+                User user1 = new User(userPojo.getUser_name().toUpperCase(), userPojo.getUser_email(), encrypted_password);
                 userDao.save(user1);
+
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
-            return "successfully saved";
+            return "successfully saved CAPITAL : ";
         }
         else
         {

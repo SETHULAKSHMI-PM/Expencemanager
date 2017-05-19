@@ -9,6 +9,10 @@ import java.util.Collection;
  * Created by sethulakshmi on 24/4/17.
  */
 
+/**
+ * Try GitPULL May19
+ */
+
 @Entity
 @Table(name = "user")
 
